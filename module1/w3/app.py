@@ -10,7 +10,7 @@ def main() -> None:
     node.right = node_b
 
     node.in_order()
-
+ 
 
 if __name__ == "__main__":
     main()
