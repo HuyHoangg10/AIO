@@ -1,5 +1,22 @@
+# Environment and sensitive configuration files
 **/.env
+
+# Byte-compiled / Python cache files
 __pycache__/
+*.py[cod]
+*$py.class
+
+# App framework internal state directories
 .chainlit/
 .files/
+
+# Model weights and checkpoint binaries
 *.pt
+*.pth
+*.caffemodel
+*.onnx
+
+# Compressed archives and large dataset folders
+*.zip
+*.tar.gz
+safety_helmet_dataset/
