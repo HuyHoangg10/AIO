@@ -1,19 +1,25 @@
-def iou_cal(box1,box2):
-  xA = max(box1[0],box2[0])
-  yA = max(box1[1],box2[1])
+def compute_iou(
+    box_a: tuple[int, int, int, int], box_b: tuple[int, int, int, int]
+) -> float:
+    xA_min, yA_min, xA_max, yA_max = box_a
+    xB_min, yB_min, xB_max, yB_max = box_b
 
-  xB = min(box1[2],box2[2])
-  yB = min(box1[3],box2[3])
+    xI_min = max(xA_min, xB_min)
+    yI_min = max(yA_min, yB_min)
 
-  interception = max(0,xB - xA + 1) * max(0,yB - yA +1)
+    xI_max = min(xA_max, xB_max)
+    yI_max = min(yA_max, yB_max)
 
-  area_box1 = (box1[2] - box1[0] + 1) * (box1[3] - box1[1] +1)
-  area_box2 = (box2[2] - box2[0] + 1) * (box2[3] - box2[1] +1)
+    intersection_area = max(0, xI_max - xI_min + 1) * max(0, yI_max - yI_min + 1)
 
-  iou = interception / (area_box1 + area_box2 - interception)
-  return iou
+    box_a_area = (xA_max - xA_min + 1) * (yA_max - yA_min + 1)
+    box_b_area = (xB_max - xB_min + 1) * (yB_max - yB_min + 1)
+    union_area = box_a_area + box_b_area - intersection_area
 
-box1 = (0,0,5,5)
-box2 = (2.5,2.5,7.5,7.5)
-result_iou = iou_cal(box1,box2)
-print(result_iou)
+    return intersection_area / union_area
+
+
+box_a = (2, 3, 7, 9)
+box_b = (4, 5, 9, 10)
+
+print(compute_iou(box_a, box_b))

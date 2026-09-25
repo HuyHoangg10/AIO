@@ -1,42 +1,50 @@
-def iou_cal(box1,box2):
-    xA = max(box1[0],box2[0])
-    yA = max(box1[1],box2[1])
+def compute_iou(
+    box_a: tuple[int, int, int, int], box_b: tuple[int, int, int, int]
+) -> float:
+    xA_min, yA_min, xA_max, yA_max = box_a
+    xB_min, yB_min, xB_max, yB_max = box_b
 
-    xB = min(box1[2],box2[2])
-    yB = min(box1[3],box2[3])
+    xI_min = max(xA_min, xB_min)
+    yI_min = max(yA_min, yB_min)
 
-    interception = max(0,xB - xA + 1) * max(0,yB - yA +1)
+    xI_max = min(xA_max, xB_max)
+    yI_max = min(yA_max, yB_max)
 
-    area_box1 = (box1[2] - box1[0] + 1) * (box1[3] - box1[1] +1)
-    area_box2 = (box2[2] - box2[0] + 1) * (box2[3] - box2[1] +1)
+    intersection_area = max(0, xI_max - xI_min + 1) * max(0, yI_max - yI_min + 1)
 
-    iou = interception / (area_box1 + area_box2 - interception)
-    return iou 
-def non_max_supression(boxes,scores,iou_thresh):
-  sorted_index = sorted(range(len(scores)),key= lambda k:scores[k],reverse=True)
-  kept_index = []
+    box_a_area = (xA_max - xA_min + 1) * (yA_max - yA_min + 1)
+    box_b_area = (xB_max - xB_min + 1) * (yB_max - yB_min + 1)
+    union_area = box_a_area + box_b_area - intersection_area
 
-  while sorted_index:
-     i = sorted_index.pop(0)
-     kept_index.append(i)
-     filter_index = []
-     for j in sorted_index:
-      if iou_cal(boxes[i],boxes[j]) <= iou_thresh:
-         filter_index.append(j)
-     sorted_index = filter_index
-  return kept_index
+    return intersection_area / union_area
+        
 
-# 5 Bounding Boxes với tọa độ lộn xộn (x_min, y_min, x_max, y_max)
+def apply_nms(
+    boxes: list[tuple[int, int, int, int, float]], iou_threshold: float
+) -> list[tuple[int, int, int, int, float]]:
+    sorted_boxes = sorted(boxes, key=lambda box: box[4], reverse=True)
+    selected_boxes = []
+
+    while sorted_boxes:
+        highest_score_box = sorted_boxes.pop(0)
+        selected_boxes.append(highest_score_box)
+
+        sorted_boxes = [
+            box
+            for box in sorted_boxes
+            if compute_iou(highest_score_box[:4], box[:4]) < iou_threshold
+        ]
+
+    return selected_boxes
+
+
 boxes = [
-    [30, 30, 80, 80],    
-    [0, 0, 20, 20],      
-    [35, 35, 85, 85],    
-    [100, 100, 150, 150],
-    [28, 28, 78, 78]     
+    (12, 84, 140, 212, 0.95),
+    (24, 84, 152, 212, 0.70),
+    (12, 90, 140, 215, 0.60),
+    (100, 100, 220, 220, 0.90),
 ]
 
-scores = [0.85, 0.4, 0.92, 0.65, 0.5]
+iou_threshold = 0.5
 
-iou_threshold = 0.2
-
-print(non_max_supression(boxes,scores,iou_threshold))
+print(apply_nms(boxes, iou_threshold))

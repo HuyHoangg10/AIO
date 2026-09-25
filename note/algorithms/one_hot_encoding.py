@@ -1,22 +1,21 @@
 import numpy as np
 
-dataset = np.array([
-  'Ho Chi Minh','Da Nang','Ho Chi Minh','Da Nang','Can Tho'
-])
+dataset = np.array(
+    ["Hanoi", "Tokyo", "London", "Hanoi", "Paris", "Tokyo", "London", "Hanoi"]
+)
 
-set_dataset = set()
+unique_dataset = set(dataset)
 
-for data in dataset:
-  set_dataset.add(data)
+sorted_data = sorted(unique_dataset)
 
-unique_data = sorted(list(set_dataset))
-encoding = {category:id for id,category in enumerate(unique_data)}
+city_index = {city: idx for idx, city in enumerate(sorted_data)}
 
-one_hot_encoded_feature = []
+one_hot_feature = []
 
 for data in dataset:
-  one_hot_vector = [0] * len(set_dataset)
-  one_hot_vector[encoding[data]] = 1
-  one_hot_encoded_feature.append(one_hot_vector)
+    one_hot_vector = [0] * len(sorted_data)
+    one_hot_vector[city_index[data]] = 1
+    one_hot_feature.append(one_hot_vector)
 
-print(one_hot_encoded_feature)
+print(sorted_data)
+print(one_hot_feature)
