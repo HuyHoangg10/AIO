@@ -1,0 +1,10 @@
+import matplotlib.image as mpimg
+import numpy as np
+
+img = mpimg.imread("module2/week1/hw/dog.jpeg")
+# img_maxRGB = np.max(img,axis = 2).astype(float)
+# img_minRGB = np.min(img,axis = 2).astype(float)
+# img_gray = (img_maxRGB + img_minRGB) /2
+luminosity = np.array([0.21,0.72,0.07])
+img_gray = img @luminosity
+print(img_gray[0,0])
