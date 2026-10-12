@@ -67,7 +67,6 @@ def prediction_play_tennis(X, list_x_name, prior_probability, conditional_probab
     p0 = prior_probability[0] * conditional_probability[0][0,x1] * conditional_probability[1][0,x2]  * conditional_probability[2][0,x3] * conditional_probability[3][0,x4] 
     p1 = prior_probability[1]  * conditional_probability[0][1,x1] * conditional_probability[1][1,x2]  * conditional_probability[2][1,x3] * conditional_probability[3][1,x4] 
     
-
     if p0 > p1:
         y_pred = 0
     else:
