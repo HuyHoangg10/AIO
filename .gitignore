@@ -20,3 +20,21 @@ __pycache__/
 *.zip
 *.tar.gz
 safety_helmet_dataset/
+
+# ================================
+# Data files & Tabular formats
+# ================================
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+data/
+datasets/
+
+# ================================
+# Jupyter Notebook checkpoints
+# ================================
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*

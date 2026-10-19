@@ -13,7 +13,7 @@ def l2_distance(x, y):
 leftimg_path = "./data/tsukuba/left.png"
 rightimg_path = "./data/tsukuba/right.png"
 scale = 16
-disparity_range = 16
+disparity_range = 8
 
 left_img = cv2.imread(leftimg_path, 0)
 right_img = cv2.imread(rightimg_path, 0)
